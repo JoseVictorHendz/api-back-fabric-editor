@@ -1,14 +1,16 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "geradorSite",
-  "main": "./src/server.js",
+  "main": "index.js",
+  "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch-ts": "tsc -w",
+    "watch-node": "nodemon dist/server.js",
+    "start": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"yarn run watch-ts\" \"yarn run watch-node\""
   },
-  "author": "jose victor",
-  "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.11.1",
+    "concurrently": "^3.5.1",
     "express": "^4.16.3"
   }
 }
