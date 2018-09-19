@@ -48,6 +48,7 @@ export class UserController {
     
             const user = await User.build<User>({
                 PeopleId: people.get({plain: true}).id,
+                PlanId: request.body.PlanId,
                 active: false,
                 id: Uuid(),
                 password: bcrypt.hashSync(request.body.password, 10),
@@ -56,18 +57,11 @@ export class UserController {
             }, {
                 include: [People]
             })
-
-            const plan = await Plan.build<Plan>({
-                UserId: user.get({plain: true}).id,
-                id: Uuid(),
-                name: request.body.name,
-                user
-            }, {
-                include: [User]
-            })
-
-            await repository.create(user, next).then(data => response.json(data));
+            
+            await repository.create(user, next, response)
+            response.json(true)
         } catch (err) {
+          response.json(err)
           next(err);
         }
     }
@@ -81,9 +75,10 @@ export class UserController {
             }
 
             let userUpdate = await repository.getOne(_id)
-
+            if(request.body.PlanId) { userUpdate.PlanId = request.body.PlanId }
             if(request.body.password) { userUpdate.password = bcrypt.hashSync(request.body.password, 10)}
             if(request.body.userName) { userUpdate.userName = request.body.userName }
+
             if(request.body.people.address) { userUpdate.people.address = request.body.people.address }
             if(request.body.people.addressNumber) { userUpdate.people.addressNumber = request.body.people.addressNumber }
             if(request.body.people.country) { userUpdate.people.country = request.body.people.country }
@@ -91,9 +86,11 @@ export class UserController {
             if(request.body.people.phone) { userUpdate.people.phone = request.body.people.phone }
             if(request.body.people.state) { userUpdate.people.state = request.body.people.state }
 
+
             await repository.update(_id, userUpdate, next).then(data => response.json(data));
             
         } catch (err) {
+             response.json(err)
              next(err);
         }
     }

@@ -3,6 +3,7 @@ import { Transaction } from "sequelize";
 
 import { User } from "../Models/User";
 import { People } from "../Models/People";
+import { Plan } from "../Models/Plan";
 
 
 export class UserRepository {
@@ -11,14 +12,14 @@ export class UserRepository {
 
     public async getAll(){
         const user: User[] = await User.findAll<User>({
-            include:[People]
+            include:[People, Plan]
           });
         return user
     }
 
     public async getOne(_id){
         const user: User = await User.findOne<User>({
-            include:[People],
+            include:[People, Plan],
             where:{id: _id}
           });
         return user
@@ -34,17 +35,17 @@ export class UserRepository {
         return user
     }
 
-    public async create(user, next) {
+    public async create(user, next, response) {
+        let newUser
         sequelize.transaction(async (t: Transaction) => {
             try {
-
-                const newUser =  await user.save({transaction: t})
-                return newUser
+                newUser = await user.save({transaction: t})
             } catch(err) {
                 t.rollback();
                 next(err);
             }
         })
+        return newUser
     }
 
     public async update(_id, user, next) {
@@ -52,10 +53,10 @@ export class UserRepository {
             try {
                 await user.people.save({transaction: t})
                 const updatedUser = await user.save({transaction: t})
-
                 return updatedUser
             } catch (err) {
                 t.rollback();
+                console.log("----------------------", err)
                 next(err);
             }
         })

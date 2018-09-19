@@ -29,6 +29,10 @@ import { Plan } from "./Plan";
     @Column(DataType.STRING)
     public PeopleId: string;
 
+    @ForeignKey(() => Plan)
+    @Column(DataType.STRING)
+    public PlanId: string;
+
     @AllowNull(true)
     @Column(DataType.BOOLEAN) public active: boolean;
   
@@ -42,7 +46,7 @@ import { Plan } from "./Plan";
     @BelongsTo(() => People)
     public people: People;
 
-    @HasOne(() => Plan, {onDelete: "CASCADE"})
+    @BelongsTo(() => Plan)
     public plan: Plan;
 
   }

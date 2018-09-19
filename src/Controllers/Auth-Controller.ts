@@ -21,20 +21,15 @@ export class AuthController {
   }
 
   public token(request: Request, response: Response, next: NextFunction): void {
-    const usuario = request.body.usuario;
-    const senha = request.body.senha;
-
-    if (!usuario || !senha) {
+    const userName = request.body.userName;
+    const passWord = request.body.passWord;
+    console.log("-----------", userName, passWord)
+    if (!userName || !passWord) {
       const err: IError = { message: "Faltando usuário ou senha", status: HttpStatus.BAD_REQUEST };
       return next(err);
     } else {
       User.findOne<User>({
-        include: [{
-            model: Plan,
-          },
-          {
-            model: People,
-          }],
+        include:[People, Plan],
         where: {
           active: true,
         },
@@ -42,7 +37,7 @@ export class AuthController {
       .then(async (usuarioRetornado: User) => {
         if (usuarioRetornado) {
 
-          if (bcrypt.compareSync(senha, usuarioRetornado.password)) {
+          if (bcrypt.compareSync(passWord, usuarioRetornado.password)) {
             const token = helperAuth.generateToken(usuarioRetornado);
 
             const data: any = {

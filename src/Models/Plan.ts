@@ -23,16 +23,12 @@ import { User } from "./User";
     @PrimaryKey
     @Column(DataType.STRING)
     public id: String;
-
-    @ForeignKey(() => User)
-    @Column(DataType.STRING)
-    public UserId: string;
   
     @AllowNull(true)
     @Unique
     @Column(DataType.STRING) public name: string;
   
-    @BelongsTo(() => User, {onDelete: "CASCADE"})
+    @HasOne(() => User)
     public user: User;
 
   }
