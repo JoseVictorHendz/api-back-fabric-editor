@@ -22,9 +22,9 @@ export class AuthController {
 
   public token(request: Request, response: Response, next: NextFunction): void {
     const userName = request.body.userName;
-    const passWord = request.body.passWord;
-    console.log("-----------", userName, passWord)
-    if (!userName || !passWord) {
+    const password = request.body.password;
+    
+    if (!userName || !password) {
       const err: IError = { message: "Faltando usuário ou senha", status: HttpStatus.BAD_REQUEST };
       return next(err);
     } else {
@@ -32,32 +32,29 @@ export class AuthController {
         include:[People, Plan],
         where: {
           active: true,
+          userName: userName
         },
       })
       .then(async (usuarioRetornado: User) => {
-        if (usuarioRetornado) {
+        console.log("-------", password, "-------", userName,"-------", usuarioRetornado.password)
+        if (bcrypt.compareSync(password, usuarioRetornado.password)) {
+          const token = helperAuth.generateToken(usuarioRetornado);
 
-          if (bcrypt.compareSync(passWord, usuarioRetornado.password)) {
-            const token = helperAuth.generateToken(usuarioRetornado);
+          const data: any = {
+            UsuarioId: usuarioRetornado.id,
+            nome: usuarioRetornado.people.name,
+            perfil: usuarioRetornado.plan ? usuarioRetornado.plan.name : "",
+            // PerfilId: usuarioRetornado.perfil ? usuarioRetornado.perfil.id : "",
+          };
 
-            const data: any = {
-              UsuarioId: usuarioRetornado.id,
-              nome: usuarioRetornado.people.name,
-              perfil: usuarioRetornado.plan ? usuarioRetornado.plan.name : "",
-              // PerfilId: usuarioRetornado.perfil ? usuarioRetornado.perfil.id : "",
-            };
+          response.json({
+            data,
+            token,
+          });
 
-            response.json({
-              data,
-              token,
-            });
-
-          } else {
-            const err: IError = { message: "Usuário ou senha incorretos", status: 403 };
-            return next(err);
-          }
         } else {
-          response.json("Usuário ou senha inválidos");
+          const err: IError = { message: "Usuário ou senha incorretos!", status: 403 };
+          return next(err);
         }
       })
       .catch((error: any) => {

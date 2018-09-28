@@ -21,6 +21,9 @@ import { User } from "./User";
     @PrimaryKey
     @Column(DataType.STRING)
     public id: String;
+
+    @AllowNull(true)
+    @Column(DataType.STRING) public city: string;
   
     @AllowNull(true)
     @Column(DataType.STRING) public name: string;
@@ -36,6 +39,9 @@ import { User } from "./User";
   
     @AllowNull(true)
     @Column(DataType.STRING) public country: string;
+
+    @AllowNull(true)
+    @Column(DataType.STRING) public email: string;
 
     @AllowNull(true)
     @Column(DataType.STRING) public state: string;

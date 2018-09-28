@@ -18,8 +18,8 @@ class UserRoute {
     }
 
     private middlewares(): void {
-        this.router.use(this.middlewareAuth.checkAuth);
-        this.router.use(this.middlewareAuth.checkAcl);
+        // this.router.use(this.middlewareAuth.checkAuth);
+        // this.router.use(this.middlewareAuth.checkAcl);
     }
 
     private initRoutes(): void {
@@ -27,6 +27,7 @@ class UserRoute {
         this.router.get("/:_id", this.userController.getOne);
         this.router.post("/", this.userController.create);
         this.router.put("/:_id", this.userController.update);
+        this.router.put("/active/:_id", this.userController.updateActive);
         this.router.delete("/:_id", this.userController.delete);
     }
 }

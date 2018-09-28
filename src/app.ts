@@ -1,30 +1,14 @@
-// import express = require("express");
-// import Routes from './Routes'
-
-// // Our Express APP config
-// const app = express();
-// app.set("port", process.env.PORT || 3000);
-
-// // API Endpoints
-// this.express.use(Routes);
-
-
-// // export our app
-// export default app;
-
 import * as bodyParser from "body-parser";
-// import * as cors from "cors";
+import * as cors from "cors";
 import * as express from "express";
 import * as fs from "fs";
-// import * as helmet from "helmet";
+import * as helmet from "helmet";
 import * as http from "http";
-// import * as methodOverride from "method-override";
+import * as methodOverride from "method-override";
 import { IError } from "./interfaces/error";
 import Routes from "./routes";
 import { sequelize } from "./sequelize";
 
-// tslint:disable-next-line:no-var-requires
-// const newrelic = require("newrelic");
 class App {
   public express: express.Application;
   private server: any;
@@ -42,27 +26,27 @@ class App {
     this.express.use(bodyParser.json({limit: "50mb"}));
     this.express.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
     // method override config
-    // this.express.use(methodOverride("X-HTTP-Method"));
-    // this.express.use(methodOverride("X-HTTP-Method-Override"));
-    // this.express.use(methodOverride("X-Method-Override"));
-    // this.express.use(methodOverride("_method"));
+    this.express.use(methodOverride("X-HTTP-Method"));
+    this.express.use(methodOverride("X-HTTP-Method-Override"));
+    this.express.use(methodOverride("X-Method-Override"));
+    this.express.use(methodOverride("_method"));
 
     // cors config
-    // this.express.use(
-    //   cors({
-    //   allowedHeaders: ["Content-type", "x-access-token", "Origin", "X-Requested-With", "Content-Type", "Accept"],
-    //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    //   origin: ["*",
-    //   "http://localhost:4200"
-    //   ],
-    //   }),
-    // );
+    this.express.use(
+      cors({
+      allowedHeaders: ["Content-type", "x-access-token", "Origin", "X-Requested-With", "Content-Type", "Accept"],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      origin: ["*",
+      "http://localhost:4200"
+      ],
+      }),
+    );
 
-    // this.express.use(express.static("public"));
+    this.express.use(express.static("public"));
 
     // helmet config
-    // this.express.use(helmet.noCache());
-    // this.express.use(helmet.hidePoweredBy());
+    this.express.use(helmet.noCache());
+    this.express.use(helmet.hidePoweredBy());
     // routes config
     this.express.use(Routes);
     // not found handler

@@ -56,7 +56,6 @@ export class UserRepository {
                 return updatedUser
             } catch (err) {
                 t.rollback();
-                console.log("----------------------", err)
                 next(err);
             }
         })
