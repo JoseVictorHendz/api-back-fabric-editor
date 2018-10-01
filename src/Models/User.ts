@@ -15,6 +15,7 @@ import {
   } from "sequelize-typescript";
 import { People } from "./People";
 import { Plan } from "./Plan";
+import { Page } from "./Page";
     
   @Table({
     timestamps: true,
@@ -48,6 +49,9 @@ import { Plan } from "./Plan";
 
     @BelongsTo(() => Plan)
     public plan: Plan;
+
+    @HasOne(() => Page, {onDelete: "CASCADE"})
+    public page: Page;
 
   }
   

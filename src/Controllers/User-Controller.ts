@@ -111,9 +111,7 @@ export class UserController {
 
     public async updateActive(request: Request, response: Response, next: NextFunction) {
         const _id = request.params._id
-
         try {
-
             let userUpdate = await repository.getOne(_id)
 
             if (request.body.active) {

@@ -18,21 +18,27 @@ import { User } from "./User";
   @Table({
     timestamps: true,
   })
-  export class Plan extends Model<Plan> {
+  export class Page extends Model<Page> {
 
     @PrimaryKey
     @Column(DataType.STRING)
     public id: String;
+    
+    @ForeignKey(() => User)
+    @Column(DataType.STRING)
+    public UserId: string;
+
+    @AllowNull(true)
+    @Column(DataType.BOOLEAN) public active: boolean;
   
     @AllowNull(true)
     @Unique
+    @Column(DataType.STRING) public creationDate: string;
+  
+    @AllowNull(true)
     @Column(DataType.STRING) public name: string;
 
-    @Column(DataType.STRING) public valueInReais: string;
-
-    @Column(DataType.STRING) public valueInDollars: string;
-  
-    @HasOne(() => User, {onDelete: "CASCADE"})
+    @BelongsTo(() => User)
     public user: User;
 
   }

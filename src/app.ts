@@ -9,6 +9,8 @@ import { IError } from "./interfaces/error";
 import Routes from "./routes";
 import { sequelize } from "./sequelize";
 
+import { PopulateData } from "./populateData"
+
 class App {
   public express: express.Application;
   private server: any;
@@ -82,19 +84,16 @@ class App {
       sequelize
         .sync({ logging, force })
         .then(() => {
-          // tslint:disable-next-line:no-console
-          console.log("Sequelize > Synchronized!");
-          // caso seja force, repopula os dados iniciais
-          // tslint:disable-next-line:no-empty
+          console.log("Sequelize is on");
           if (force) {
+            const populateData = new PopulateData()
+            populateData.init()
           }
         })
         .catch((error) => {
-          // tslint:disable-next-line:no-console
           console.log(error);
         });
     } catch (error) {
-      // tslint:disable-next-line:no-console
       console.log(error);
     }
   }
