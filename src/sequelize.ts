@@ -2,7 +2,8 @@ import * as path from "path";
 import { Sequelize } from "sequelize-typescript";
 
 const jsonConfig = require("./config/config.json");
-const dbConfig = jsonConfig[process.env.NODE_ENV || "test"];
+// const dbConfig = jsonConfig[process.env.NODE_ENV || "test"];
+const dbConfig = jsonConfig["test"];
 const urlModels = path.join(__dirname, "./Models");
 console.log("------------test", dbConfig)
 class Database {
