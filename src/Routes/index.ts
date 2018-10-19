@@ -20,7 +20,6 @@ class Routes {
 
     private routes(): void {
         this.router.post("/token", this.autenticarController.token);
-        this.router.get("/test", this.autenticarController.test);
         this.router.post("/refresh-token", this.middlewareAuth.checkAuth, this.autenticarController.refreshToken);
         
         this.router.use("/user", userRoute)

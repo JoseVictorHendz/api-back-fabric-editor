@@ -19,10 +19,8 @@ export class AuthController {
   constructor() {
 
   }
-  public test(request: Request, response: Response, next: NextFunction) {response.json("test working")}
 
-
-  public token(request: Request, response: Response, next: NextFunction): void {
+  public async token(request: Request, response: Response, next: NextFunction): void {
     const userName = request.body.userName;
     const password = request.body.password;
     
@@ -30,7 +28,7 @@ export class AuthController {
       const err: IError = { message: "Faltando usuário ou senha", status: HttpStatus.BAD_REQUEST };
       return next(err);
     } else {
-      User.findOne<User>({
+      await User.findOne<User>({
         include:[People, Plan],
         where: {
           active: true,
@@ -38,7 +36,7 @@ export class AuthController {
         },
       })
       .then(async (usuarioRetornado: User) => {
-        console.log("-------", password, "-------", userName,"-------", usuarioRetornado.password)
+        console.log("-------", password, "-------", userName,"-------", usuarioRetornado)
         if (bcrypt.compareSync(password, usuarioRetornado.password)) {
           const token = helperAuth.generateToken(usuarioRetornado);
 
