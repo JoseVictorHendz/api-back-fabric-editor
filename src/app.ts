@@ -39,7 +39,8 @@ class App {
       allowedHeaders: ["Content-type", "x-access-token", "Origin", "X-Requested-With", "Content-Type", "Accept"],
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       origin: ["*",
-      "http://localhost:4200"
+      "http://localhost:4200",
+      "https://fabric-editor-front.herokuapp.com"
       ],
       }),
     );
