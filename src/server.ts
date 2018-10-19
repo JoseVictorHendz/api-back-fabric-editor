@@ -1,11 +1,6 @@
 import * as http from "http";
-// import * as moment from "moment";
-// import * as socketIo from "socket.io";
 import app from "./app";
 
-// const socketJwt = require("socketio-jwt-auth");
-// const secretJwtKey = process.env.JWT_SECRET || "secretApiKey";
-// const cron = require("node-cron");
 const port = normalizePort(process.env.PORT || 3000);
 const server = http.createServer(app);
 

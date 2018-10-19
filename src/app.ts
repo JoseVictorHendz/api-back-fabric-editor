@@ -6,7 +6,7 @@ import * as helmet from "helmet";
 import * as http from "http";
 import * as methodOverride from "method-override";
 import { IError } from "./interfaces/error";
-import Routes from "./routes";
+import Routes from "./Routes";
 import { sequelize } from "./sequelize";
 
 import { PopulateData } from "./populateData"
