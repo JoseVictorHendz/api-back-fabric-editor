@@ -19,6 +19,8 @@ export class AuthController {
   constructor() {
 
   }
+  public test(request: Request, response: Response, next: NextFunction) {response.json("test working")}
+
 
   public token(request: Request, response: Response, next: NextFunction): void {
     const userName = request.body.userName;
